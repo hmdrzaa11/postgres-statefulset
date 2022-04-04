@@ -23,6 +23,7 @@ spec:
               value: asdf
             - name: POSTGRES_USER
               value: werewolf
+
             - name: POSTGRES_DATABASE
               value: posts
             - name: POSTGRES_HOST
