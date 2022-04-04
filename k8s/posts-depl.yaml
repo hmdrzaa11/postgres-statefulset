@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+  labels:
+    app: posts-depl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: posts-depl
+      labels:
+        app: posts-depl
+    spec:
+      containers:
+        - name: posts-depl
+          image: hmdrzadev/posts
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_PASSWORD
+              value: asdf
+            - name: POSTGRES_USER
+              value: werewolf
+            - name: POSTGRES_DATABASE
+              value: posts
+            - name: POSTGRES_HOST
+              value: postgres-srv
+            - name: POSTGRES_DB
+              value: posts
+          resources:
+            limits:
+              memory: 200Mi
+              cpu: 500m
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: posts-depl
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-srv
+spec:
+  selector:
+    app: posts-depl
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP
